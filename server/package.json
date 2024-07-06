@@ -1,0 +1,27 @@
+{
+  "name": "todo-app-express",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "ts-node index.ts",
+    "build": "tsc",
+    "serve": "node dist/index.js"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "http-errors": "~1.6.3",
+    "http-status-codes": "^2.3.0",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1",
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.10",
+    "@types/pg": "^8.11.6",
+    "express": "^4.19.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  }
+}
