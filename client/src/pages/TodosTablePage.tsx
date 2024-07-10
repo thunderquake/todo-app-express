@@ -15,17 +15,15 @@ export interface Todo {
 const TodosTablePage = () => {
   const { data: todos } = useGetTodosQuery();
 
-  console.log(todos);
-
   return (
     <Box
+      padding={0}
+      margin={0}
+      height={`100vh`}
+      width={`100vw`}
       sx={{
         background: `rgb(52,131,224)`,
         backgroundImage: `linear-gradient(0deg, rgba(52,131,224,1) 0%, rgba(255,255,255,1) 100%)`,
-        padding: 0,
-        margin: 0,
-        height: `100vh`,
-        width: `100vw`,
       }}
     >
       <Container maxWidth="xl">
