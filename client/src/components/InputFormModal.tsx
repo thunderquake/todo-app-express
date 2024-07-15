@@ -10,6 +10,7 @@ import {
   Box,
   Typography,
   IconButton,
+  Grow,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -26,10 +27,11 @@ const schema = yup.object().shape({
 });
 
 const modalStyle = {
-  position: "absolute" as const,
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  maxWidth: "100vw",
+  maxHeight: "100%",
+  position: "fixed",
+  transform: "translate(0, -50%)",
+  overflowY: "auto",
   width: 400,
   bgcolor: "background.paper",
   borderRadius: "4px",
@@ -66,57 +68,67 @@ export const InputFormModal: React.FC = () => {
           sx={{ bgcolor: "primary.main", padding: "4px", borderRadius: "100%" }}
         />
       </IconButton>
-      <Modal open={open} onClose={handleClose}>
-        <Box sx={modalStyle}>
-          <Typography variant="h6" component="h2" id="modal-title">
-            Input Todo
-          </Typography>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <TextField
-              label="Name"
-              {...register("name")}
-              error={!!errors.name}
-              helperText={errors.name?.message}
-              fullWidth
-              margin="normal"
-            />
+      <Modal
+        open={open}
+        onClose={handleClose}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Grow in={open}>
+          <Box sx={modalStyle}>
+            <Typography variant="h6" component="h2" id="modal-title">
+              Input Todo
+            </Typography>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <TextField
+                label="Name"
+                {...register("name")}
+                error={!!errors.name}
+                helperText={errors.name?.message}
+                fullWidth
+                margin="normal"
+              />
 
-            <TextField
-              label="Description"
-              {...register("description")}
-              error={!!errors.description}
-              helperText={errors.description?.message}
-              fullWidth
-              margin="normal"
-            />
+              <TextField
+                label="Description"
+                {...register("description")}
+                error={!!errors.description}
+                helperText={errors.description?.message}
+                fullWidth
+                margin="normal"
+              />
 
-            <TextField
-              label="Type"
-              select
-              {...register("type")}
-              error={!!errors.type}
-              helperText={errors.type?.message}
-              fullWidth
-              margin="normal"
-              defaultValue="task"
-            >
-              <MenuItem value="task">Task</MenuItem>
-              <MenuItem value="quote">Quote</MenuItem>
-              <MenuItem value="idea">Idea</MenuItem>
-              <MenuItem value="thoughts">Thoughts</MenuItem>
-            </TextField>
+              <TextField
+                label="Type"
+                select
+                {...register("type")}
+                error={!!errors.type}
+                helperText={errors.type?.message}
+                fullWidth
+                margin="normal"
+                defaultValue="task"
+              >
+                <MenuItem value="task">Task</MenuItem>
+                <MenuItem value="quote">Quote</MenuItem>
+                <MenuItem value="idea">Idea</MenuItem>
+                <MenuItem value="thoughts">Thoughts</MenuItem>
+              </TextField>
 
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              sx={{ padding: "8px", marginTop: "16px" }}
-            >
-              Submit
-            </Button>
-          </form>
-        </Box>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                sx={{ padding: "8px", marginTop: "16px" }}
+              >
+                Submit
+              </Button>
+            </form>
+          </Box>
+        </Grow>
       </Modal>
     </>
   );
