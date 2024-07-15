@@ -6,6 +6,7 @@ import { SvgIconComponent } from "@mui/icons-material";
 
 export const QUERY_KEYS = {
   GET_TODOS_QUERY: "GET_TODOS_QUERY_KEY",
+  POST_TODO_QUERY: "POST_TODO_QUERY_KEY",
 };
 
 export const TABLE_HEADERS = [
