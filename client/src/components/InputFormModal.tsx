@@ -13,6 +13,7 @@ import {
   Grow,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import usePostTodoMutation from "../api/todo_service/postTodo";
 
 interface IFormInput {
   name: string;
@@ -54,8 +55,11 @@ export const InputFormModal: React.FC = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const { mutate } = usePostTodoMutation();
+
   const onSubmit = (data: IFormInput) => {
     console.log(data);
+    mutate(data);
     handleClose();
     reset();
   };
@@ -109,12 +113,12 @@ export const InputFormModal: React.FC = () => {
                 helperText={errors.type?.message}
                 fullWidth
                 margin="normal"
-                defaultValue="task"
+                defaultValue="Task"
               >
-                <MenuItem value="task">Task</MenuItem>
-                <MenuItem value="quote">Quote</MenuItem>
-                <MenuItem value="idea">Idea</MenuItem>
-                <MenuItem value="thoughts">Thoughts</MenuItem>
+                <MenuItem value="Task">Task</MenuItem>
+                <MenuItem value="Quote">Quote</MenuItem>
+                <MenuItem value="Idea">Idea</MenuItem>
+                <MenuItem value="Thoughts">Thoughts</MenuItem>
               </TextField>
 
               <Button
