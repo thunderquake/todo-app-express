@@ -49,7 +49,7 @@ export const InputFormModal: React.FC = () => {
     reset,
   } = useForm<IFormInput>({
     resolver: yupResolver(schema),
-    defaultValues: { description: "", name: "", type: "task" },
+    defaultValues: { description: "", name: "", type: "Task" },
   });
 
   const handleOpen = () => setOpen(true);

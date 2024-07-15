@@ -1,5 +1,5 @@
 import { Todo } from "./../../pages/TodosTablePage";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import instance from "../apiInstance";
 import { QUERY_KEYS } from "../../constants/constants";
 
@@ -13,14 +13,17 @@ const postTodo = async (todo: Todo): Promise<ResultMessage> => {
 };
 
 const usePostTodoMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: postTodo,
     mutationKey: [QUERY_KEYS.POST_TODO_QUERY],
     onSuccess: (data) => {
-      return data;
+      console.log("Success:", data);
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GET_TODOS_QUERY] });
     },
     onError: (error) => {
-      console.log(error.message);
+      console.error("Error:", error.message);
+      alert("There was an error adding the todo.");
     },
   });
 };
