@@ -10,16 +10,13 @@ import {
   Typography,
 } from "@mui/material";
 import { TABLE_HEADERS } from "../constants/constants";
-import { Todo } from "../pages/TodosTablePage";
+import useGetTodosQuery from "../api/todo_service/getTodos";
 import TodoRows from "./TodoRows";
 
 import { InputFormModal } from "./InputFormModal";
 
-export interface TodosTableProps {
-  data: Todo[];
-}
-
-const TodosTable = ({ data }: TodosTableProps) => {
+const TodosTable = () => {
+  const { data: todos, refetch } = useGetTodosQuery();
   return (
     <>
       <TableContainer
@@ -36,7 +33,7 @@ const TodosTable = ({ data }: TodosTableProps) => {
           >
             Todos
           </Typography>
-          <InputFormModal />
+          <InputFormModal refetch={refetch} />
         </Toolbar>
         <Table sx={{ minWidth: 650, maxHeight: 800 }} stickyHeader>
           <TableHead>
@@ -52,7 +49,7 @@ const TodosTable = ({ data }: TodosTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TodoRows data={data} />
+            <TodoRows data={todos ?? []} />
           </TableBody>
         </Table>
       </TableContainer>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "../helpers/validation";
@@ -14,12 +14,19 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import usePostTodoMutation from "../api/todo_service/postTodo";
-import useGetTodosQuery from "../api/todo_service/getTodos";
+import { RefetchOptions, QueryObserverResult } from "@tanstack/react-query";
+import { Todo } from "../pages/TodosTablePage";
 
 interface IFormInput {
   name: string;
-  description: string;
+  description?: string;
   type: string;
+}
+
+interface IFormModalProps {
+  refetch: (
+    options?: RefetchOptions | undefined
+  ) => Promise<QueryObserverResult<Todo[], Error>>;
 }
 
 const modalStyle = {
@@ -35,7 +42,7 @@ const modalStyle = {
   p: 4,
 };
 
-export const InputFormModal: React.FC = () => {
+export const InputFormModal = ({ refetch }: IFormModalProps) => {
   const [open, setOpen] = useState(false);
   const {
     register,
@@ -51,7 +58,6 @@ export const InputFormModal: React.FC = () => {
   const handleClose = () => setOpen(false);
 
   const { mutate } = usePostTodoMutation();
-  const { refetch } = useGetTodosQuery();
 
   const onSubmit = (data: IFormInput) => {
     console.log(data);
