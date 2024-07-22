@@ -29,19 +29,6 @@ interface IFormModalProps {
   ) => Promise<QueryObserverResult<Todo[], Error>>;
 }
 
-const modalStyle = {
-  maxWidth: "100vw",
-  maxHeight: "100%",
-  position: "fixed",
-  transform: "translate(0, -50%)",
-  overflowY: "auto",
-  width: 400,
-  bgcolor: "background.paper",
-  borderRadius: "4px",
-  boxShadow: 24,
-  p: 4,
-};
-
 export const InputFormModal = ({ refetch }: IFormModalProps) => {
   const [open, setOpen] = useState(false);
   const {
@@ -91,7 +78,17 @@ export const InputFormModal = ({ refetch }: IFormModalProps) => {
         }}
       >
         <Grow in={open}>
-          <Box sx={modalStyle}>
+          <Box
+            maxWidth={"100vw"}
+            maxHeight={"100vh"}
+            position={"fixed"}
+            width={400}
+            borderRadius={"4px"}
+            bgcolor={"background.paper"}
+            boxShadow={24}
+            p={4}
+            sx={{ transform: "translate(0, -50%)", overflowY: "auto" }}
+          >
             <Typography variant="h6" component="h2" id="modal-title">
               Input Todo
             </Typography>
