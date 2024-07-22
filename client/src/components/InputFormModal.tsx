@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import usePostTodoMutation from "../api/todo_service/postTodo";
+import useGetTodosQuery from "../api/todo_service/getTodos";
 
 interface IFormInput {
   name: string;
@@ -50,12 +51,20 @@ export const InputFormModal: React.FC = () => {
   const handleClose = () => setOpen(false);
 
   const { mutate } = usePostTodoMutation();
+  const { refetch } = useGetTodosQuery();
 
   const onSubmit = (data: IFormInput) => {
     console.log(data);
-    mutate(data);
-    handleClose();
-    reset();
+    mutate(data, {
+      onSuccess: () => {
+        refetch();
+        handleClose();
+        reset();
+      },
+      onError: (error) => {
+        console.error("There was an error: ", error);
+      },
+    });
   };
 
   return (
