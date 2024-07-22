@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { schema } from "../helpers/validation";
 import {
   TextField,
   MenuItem,
@@ -20,12 +20,6 @@ interface IFormInput {
   description: string;
   type: string;
 }
-
-const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
-  description: yup.string().required("Description is required"),
-  type: yup.string().required("Type is required"),
-});
 
 const modalStyle = {
   maxWidth: "100vw",
