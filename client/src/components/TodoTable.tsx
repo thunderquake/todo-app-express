@@ -16,7 +16,7 @@ import TodoRows from "./TodoRows";
 import { InputFormModal } from "./InputFormModal";
 
 const TodosTable = () => {
-  const { data: todos, refetch } = useGetTodosQuery();
+  const { data: todos, refetch } = useGetTodosQuery(5);
   return (
     <>
       <TableContainer
