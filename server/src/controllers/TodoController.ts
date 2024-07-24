@@ -14,7 +14,12 @@ export const getTodos = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const result = await getTodosService();
+    const { itemsPerPage = 10, page = 1 } = req.query;
+
+    const result = await getTodosService({
+      itemsPerPage: Number(itemsPerPage),
+      page: Number(page),
+    });
     if (result.length === 0) {
       return res
         .status(StatusCodes.NOT_FOUND)

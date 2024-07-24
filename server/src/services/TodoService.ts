@@ -1,8 +1,19 @@
 import { TodoBody, UpdateTodoBody } from "../types/todoTypes";
 import pool from "../../todosDb";
 
-export const getTodosService = async () => {
-  const result = await pool.query("SELECT * FROM todos");
+interface GetTodosOptions {
+  itemsPerPage?: number;
+  page?: number;
+}
+
+export const getTodosService = async ({
+  itemsPerPage = 10,
+  page = 1,
+}: GetTodosOptions = {}) => {
+  const offset = (page - 1) * itemsPerPage;
+  const query = `SELECT * FROM todos LIMIT $1 OFFSET $2`;
+
+  const result = await pool.query(query, [itemsPerPage, offset]);
   return result.rows;
 };
 
