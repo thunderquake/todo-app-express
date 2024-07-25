@@ -20,7 +20,7 @@ export const getTodos = async (
       itemsPerPage: Number(itemsPerPage),
       page: Number(page),
     });
-    if (result.length === 0) {
+    if (result.todos.length === 0) {
       return res
         .status(StatusCodes.NOT_FOUND)
         .json({ message: ERROR_MESSAGES.TODOS_NOT_FOUND });

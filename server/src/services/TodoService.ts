@@ -12,9 +12,15 @@ export const getTodosService = async ({
 }: GetTodosOptions = {}) => {
   const offset = (page - 1) * itemsPerPage;
   const query = `SELECT * FROM todos LIMIT $1 OFFSET $2`;
+  const countQuery = `SELECT COUNT(*) FROM todos`;
 
   const result = await pool.query(query, [itemsPerPage, offset]);
-  return result.rows;
+  const countResult = await pool.query(countQuery);
+
+  return {
+    todos: result.rows,
+    totalCount: parseInt(countResult.rows[0].count, 10),
+  };
 };
 
 export const createTodoService = async ({
