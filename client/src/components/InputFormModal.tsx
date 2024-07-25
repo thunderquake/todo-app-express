@@ -15,7 +15,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import usePostTodoMutation from "../api/todo_service/postTodo";
 import { RefetchOptions, QueryObserverResult } from "@tanstack/react-query";
-import { Todo } from "../pages/TodosTablePage";
+import { GetTodosResponse } from "../api/todo_service/getTodos";
 
 interface IFormInput {
   name: string;
@@ -25,8 +25,8 @@ interface IFormInput {
 
 interface IFormModalProps {
   refetch: (
-    options?: RefetchOptions | undefined
-  ) => Promise<QueryObserverResult<Todo[], Error>>;
+    options?: RefetchOptions
+  ) => Promise<QueryObserverResult<GetTodosResponse, Error>>;
 }
 
 export const InputFormModal = ({ refetch }: IFormModalProps) => {

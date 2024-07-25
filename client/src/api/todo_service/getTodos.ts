@@ -4,25 +4,22 @@ import instance from "../apiInstance";
 import { QUERY_KEYS } from "../../constants/constants";
 import { Todo } from "../../pages/TodosTablePage";
 
-interface GetTodosParams {
-  itemsPerPage: number;
-  page: number;
+export interface GetTodosResponse {
+  todos: Todo[];
+  totalCount: number;
 }
 
-const getTodos = async ({ itemsPerPage, page }: GetTodosParams) => {
-  const { data: result } = await instance.get<Todo[]>("/todos", {
-    params: {
-      itemsPerPage,
-      page,
-    },
+const getTodos = async (page: number): Promise<GetTodosResponse> => {
+  const { data } = await instance.get<GetTodosResponse>("/todos", {
+    params: { itemsPerPage: ITEMS_PER_PAGE, page },
   });
-  return result;
+  return data;
 };
 
-const useGetTodosQuery = (page: number = 1) => {
+const useGetTodosQuery = (page: number) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_TODOS_QUERY, page],
-    queryFn: () => getTodos({ itemsPerPage: ITEMS_PER_PAGE, page }),
+    queryFn: () => getTodos(page),
   });
 };
 
