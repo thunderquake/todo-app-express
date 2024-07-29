@@ -19,7 +19,7 @@ export const getTodosService = async ({
 
   return {
     todos: result.rows,
-    totalCount: parseInt(countResult.rows[0].count, 10),
+    totalCount: Number(countResult.rows[0].count),
   };
 };
 

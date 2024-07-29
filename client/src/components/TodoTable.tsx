@@ -21,7 +21,7 @@ import TodosTablePagination from "./TablePagination";
 
 const TodosTable = () => {
   const [searchParams] = useSearchParams();
-  const page = parseInt(searchParams.get("page") || "1", 10);
+  const page = Number(searchParams.get("page") || "1");
   const { data, refetch } = useGetTodosQuery(page);
 
   useEffect(() => {
