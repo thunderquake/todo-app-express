@@ -1,12 +1,35 @@
-import { TableRow, TableCell } from "@mui/material";
+import { TableRow, TableCell, IconButton } from "@mui/material";
 import { Todo } from "../pages/TodosTablePage";
 import { TODO_TYPE_ICONS } from "../constants/constants";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  UseMutateFunction,
+} from "@tanstack/react-query";
+import { ResultMessage } from "../api/todo_service/postTodo";
+import { GetTodosResponse } from "../api/todo_service/getTodos";
 
 interface TodoRowsProps {
   data: Todo[];
+  mutate: UseMutateFunction<ResultMessage, Error, string, unknown>;
+  refetch: (
+    options?: RefetchOptions
+  ) => Promise<QueryObserverResult<GetTodosResponse, Error>>;
 }
 
-const TodoRows = ({ data }: TodoRowsProps) => {
+const TodoRows = ({ data, mutate, refetch }: TodoRowsProps) => {
+  const handleDelete = (id: string) => {
+    mutate(id, {
+      onSuccess: () => {
+        refetch();
+      },
+      onError: (error) => {
+        console.error("There was an error: ", error);
+      },
+    });
+  };
+
   return (
     <>
       {data.map((todo: Todo) => {
@@ -27,6 +50,11 @@ const TodoRows = ({ data }: TodoRowsProps) => {
             </TableCell>
             <TableCell>
               {new Date(todo.updated_at).toLocaleDateString()}
+            </TableCell>
+            <TableCell>
+              <IconButton color="primary" onClick={() => handleDelete(todo.id)}>
+                <DeleteIcon />
+              </IconButton>
             </TableCell>
           </TableRow>
         );

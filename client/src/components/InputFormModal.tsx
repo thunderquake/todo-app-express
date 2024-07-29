@@ -17,7 +17,7 @@ import usePostTodoMutation from "../api/todo_service/postTodo";
 import { RefetchOptions, QueryObserverResult } from "@tanstack/react-query";
 import { GetTodosResponse } from "../api/todo_service/getTodos";
 
-interface IFormInput {
+export interface IFormInput {
   name: string;
   description?: string;
   type: string;
