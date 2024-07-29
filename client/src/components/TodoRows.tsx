@@ -1,4 +1,4 @@
-import { TableRow, TableCell, IconButton } from "@mui/material";
+import { TableRow, TableCell, IconButton, Box } from "@mui/material";
 import { Todo } from "../pages/TodosTablePage";
 import { TODO_TYPE_ICONS } from "../constants/constants";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { ResultMessage } from "../api/todo_service/postTodo";
 import { GetTodosResponse } from "../api/todo_service/getTodos";
+import { EditFormModal } from "./EditFormModal";
 
 interface TodoRowsProps {
   data: Todo[];
@@ -52,9 +53,15 @@ const TodoRows = ({ data, mutate, refetch }: TodoRowsProps) => {
               {new Date(todo.updated_at).toLocaleDateString()}
             </TableCell>
             <TableCell>
-              <IconButton color="primary" onClick={() => handleDelete(todo.id)}>
-                <DeleteIcon />
-              </IconButton>
+              <Box display={"flex"} flexDirection={"row"}>
+                <IconButton
+                  color="primary"
+                  onClick={() => handleDelete(todo.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+                <EditFormModal refetch={refetch} todo={todo} />
+              </Box>
             </TableCell>
           </TableRow>
         );
