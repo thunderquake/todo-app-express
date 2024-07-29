@@ -7,6 +7,7 @@ import { SvgIconComponent } from "@mui/icons-material";
 export const QUERY_KEYS = {
   GET_TODOS_QUERY: "GET_TODOS_QUERY_KEY",
   POST_TODO_QUERY: "POST_TODO_QUERY_KEY",
+  DELETE_TODO_QUERY: "DELETE_TODO_QUERY_KEY",
 };
 
 export const TABLE_HEADERS = [
@@ -15,6 +16,7 @@ export const TABLE_HEADERS = [
   "Description",
   "Created At",
   "Updated At",
+  "",
 ];
 
 export const TODO_TYPE_ICONS: Record<string, SvgIconComponent> = {

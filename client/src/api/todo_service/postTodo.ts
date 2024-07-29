@@ -1,13 +1,13 @@
-import { Todo } from "./../../pages/TodosTablePage";
 import { useMutation } from "@tanstack/react-query";
 import instance from "../apiInstance";
 import { QUERY_KEYS } from "../../constants/constants";
+import { IFormInput } from "../../components/InputFormModal";
 
-interface ResultMessage {
+export interface ResultMessage {
   message: string;
 }
 
-const postTodo = async (todo: Todo): Promise<ResultMessage> => {
+const postTodo = async (todo: IFormInput): Promise<ResultMessage> => {
   const { data } = await instance.post<ResultMessage>("/todos", todo);
   return data;
 };

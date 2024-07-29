@@ -18,11 +18,13 @@ import { useSearchParams } from "react-router-dom";
 import { InputFormModal } from "./InputFormModal";
 import { useEffect } from "react";
 import TodosTablePagination from "./TablePagination";
+import useDeleteTodoMutation from "../api/todo_service/deleteTodo";
 
 const TodosTable = () => {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || "1");
   const { data, refetch } = useGetTodosQuery(page);
+  const { mutate } = useDeleteTodoMutation();
 
   useEffect(() => {
     refetch();
@@ -59,7 +61,11 @@ const TodosTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TodoRows data={data?.todos ?? []} />
+          <TodoRows
+            data={data?.todos ?? []}
+            mutate={mutate}
+            refetch={refetch}
+          />
         </TableBody>
         <TableFooter></TableFooter>
       </Table>

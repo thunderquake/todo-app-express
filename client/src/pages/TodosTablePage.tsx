@@ -3,11 +3,11 @@ import TodosTable from "../components/TodoTable";
 import { TODO_TYPE_ICONS } from "../constants/constants";
 
 export interface Todo {
-  id?: string;
+  id: string;
   name: string;
   description?: string;
-  created_at?: string;
-  updated_at?: string;
+  created_at: string;
+  updated_at: string;
   type: keyof typeof TODO_TYPE_ICONS;
 }
 
