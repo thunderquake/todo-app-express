@@ -47,7 +47,6 @@ export const InputFormModal = ({ refetch }: IFormModalProps) => {
   const { mutate } = usePostTodoMutation();
 
   const onSubmit = (data: IFormInput) => {
-    console.log(data);
     mutate(data, {
       onSuccess: () => {
         refetch();
