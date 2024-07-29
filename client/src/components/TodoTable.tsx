@@ -20,7 +20,6 @@ import { useEffect } from "react";
 import TodosTablePagination from "./TablePagination";
 
 const TodosTable = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searchParams] = useSearchParams();
   const page = parseInt(searchParams.get("page") || "1", 10);
   const { data, refetch } = useGetTodosQuery(page);
