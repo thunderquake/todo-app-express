@@ -4,18 +4,25 @@ import pool from "../../todosDb";
 interface GetTodosOptions {
   itemsPerPage?: number;
   page?: number;
+  name?: string;
 }
 
 export const getTodosService = async ({
   itemsPerPage = 10,
   page = 1,
+  name = "",
 }: GetTodosOptions = {}) => {
   const offset = (page - 1) * itemsPerPage;
-  const query = `SELECT * FROM todos LIMIT $1 OFFSET $2`;
-  const countQuery = `SELECT COUNT(*) FROM todos`;
+  const query = `SELECT * FROM todos 
+  WHERE name ILIKE $3
+  ORDER BY updated_at DESC 
+  LIMIT $1 OFFSET $2`;
 
-  const result = await pool.query(query, [itemsPerPage, offset]);
-  const countResult = await pool.query(countQuery);
+  const countQuery = `SELECT COUNT(*) FROM todos
+  WHERE name ILIKE $1`;
+
+  const result = await pool.query(query, [itemsPerPage, offset, `%${name}%`]);
+  const countResult = await pool.query(countQuery, [`%${name}%`]);
 
   return {
     todos: result.rows,

@@ -16,19 +16,22 @@ import useGetTodosQuery from "../api/todo_service/getTodos";
 import TodoRows from "./TodoRows";
 import { useSearchParams } from "react-router-dom";
 import { InputFormModal } from "./InputFormModal";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import TodosTablePagination from "./TablePagination";
 import useDeleteTodoMutation from "../api/todo_service/deleteTodo";
+import TodoSearchBar from "./TodoSearch";
 
 const TodosTable = () => {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || "1");
-  const { data, refetch } = useGetTodosQuery(page);
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("name") || "");
+
+  const { data, refetch } = useGetTodosQuery(page, searchTerm);
   const { mutate } = useDeleteTodoMutation();
 
   useEffect(() => {
     refetch();
-  }, [page, refetch]);
+  }, [page, refetch, searchTerm]);
 
   return (
     <TableContainer
@@ -45,6 +48,7 @@ const TodosTable = () => {
         >
           Todos
         </Typography>
+        <TodoSearchBar setSearchTerm={setSearchTerm} />
         <InputFormModal refetch={refetch} />
       </Toolbar>
       <Table sx={{ minWidth: 650, maxHeight: 800 }} stickyHeader>

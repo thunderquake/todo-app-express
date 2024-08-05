@@ -9,17 +9,20 @@ export interface GetTodosResponse {
   totalCount: number;
 }
 
-const getTodos = async (page: number): Promise<GetTodosResponse> => {
+const getTodos = async (
+  page: number,
+  searchTerm: string
+): Promise<GetTodosResponse> => {
   const { data } = await instance.get<GetTodosResponse>("/todos", {
-    params: { itemsPerPage: ITEMS_PER_PAGE, page },
+    params: { itemsPerPage: ITEMS_PER_PAGE, page, name: searchTerm },
   });
   return data;
 };
 
-const useGetTodosQuery = (page: number) => {
+const useGetTodosQuery = (page: number, searchTerm: string) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_TODOS_QUERY, page],
-    queryFn: () => getTodos(page),
+    queryFn: () => getTodos(page, searchTerm),
   });
 };
 
