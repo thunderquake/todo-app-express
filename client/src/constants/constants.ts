@@ -27,4 +27,4 @@ export const TODO_TYPE_ICONS: Record<string, SvgIconComponent> = {
   Thoughts: PsychologyAltOutlinedIcon,
 };
 
-export const ITEMS_PER_PAGE = 10;
+export const ITEMS_PER_PAGE = 8;
