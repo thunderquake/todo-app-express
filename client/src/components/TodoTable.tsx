@@ -1,5 +1,6 @@
 import {
   Box,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -16,18 +17,32 @@ import useGetTodosQuery from "../api/todo_service/getTodos";
 import TodoRows from "./TodoRows";
 import { useSearchParams } from "react-router-dom";
 import { InputFormModal } from "./InputFormModal";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import TodosTablePagination from "./TablePagination";
 import useDeleteTodoMutation from "../api/todo_service/deleteTodo";
 import TodoSearchBar from "./TodoSearch";
+import { AxiosError, HttpStatusCode } from "axios";
 
 const TodosTable = () => {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || "1");
   const [searchTerm, setSearchTerm] = useState(searchParams.get("name") || "");
 
-  const { data, refetch } = useGetTodosQuery(page, searchTerm);
+  const { data, error, isLoading, refetch } = useGetTodosQuery(
+    page,
+    searchTerm
+  );
   const { mutate } = useDeleteTodoMutation();
+
+  const isNotFound = useMemo(
+    () =>
+      error instanceof AxiosError
+        ? error.response?.status === HttpStatusCode.NotFound
+        : false,
+    [error]
+  );
+
+  console.log(isLoading);
 
   useEffect(() => {
     refetch();
@@ -76,11 +91,33 @@ const TodosTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TodoRows
-              data={data?.todos ?? []}
-              mutate={mutate}
-              refetch={refetch}
-            />
+            {isLoading && (
+              <TableRow sx={{ height: 73 * 8 }}>
+                <TableCell
+                  colSpan={TABLE_HEADERS.length}
+                  sx={{ height: "100%" }}
+                  align="center"
+                >
+                  <CircularProgress />
+                </TableCell>
+              </TableRow>
+            )}
+            {isNotFound ? (
+              <TableRow sx={{ height: 73 * 8 }}>
+                <TableCell
+                  colSpan={TABLE_HEADERS.length}
+                  sx={{ height: "100%" }}
+                >
+                  <Typography textAlign={"center"}>No todos found!</Typography>
+                </TableCell>
+              </TableRow>
+            ) : (
+              <TodoRows
+                data={data?.todos ?? []}
+                mutate={mutate}
+                refetch={refetch}
+              />
+            )}
           </TableBody>
           <TableFooter></TableFooter>
         </Table>
