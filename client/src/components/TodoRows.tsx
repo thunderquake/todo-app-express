@@ -1,4 +1,12 @@
-import { TableRow, TableCell, IconButton, Box, Tooltip } from "@mui/material";
+import {
+  TableRow,
+  TableCell,
+  IconButton,
+  Box,
+  Tooltip,
+  Fade,
+  Typography,
+} from "@mui/material";
 import { Todo } from "../pages/TodosTablePage";
 import { TODO_TYPE_ICONS } from "../constants/constants";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -39,7 +47,7 @@ const TodoRows = ({ data, mutate, refetch }: TodoRowsProps) => {
           <TableRow
             key={todo.id}
             sx={{
-              height: "48px",
+              height: "73px",
             }}
             hover
           >
@@ -55,8 +63,15 @@ const TodoRows = ({ data, mutate, refetch }: TodoRowsProps) => {
                 textOverflow: "ellipsis",
               }}
             >
-              <Tooltip title={todo.description}>
-                <span>{todo.description}</span>
+              <Tooltip
+                title={<Typography>{todo.description}</Typography>}
+                arrow
+                placement="bottom-start"
+                disableInteractive
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
+              >
+                <Typography fontSize={"14px"}>{todo.description}</Typography>
               </Tooltip>
             </TableCell>
             <TableCell>

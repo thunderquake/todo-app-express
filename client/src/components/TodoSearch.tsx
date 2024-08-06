@@ -3,14 +3,14 @@ import TextField from "@mui/material/TextField";
 import { useSearchParams } from "react-router-dom";
 import debounce from "lodash.debounce";
 import SearchIcon from "@mui/icons-material/Search";
-import { Fade, InputAdornment, Tooltip } from "@mui/material";
+import { Fade, InputAdornment, Tooltip, Typography } from "@mui/material";
 
 interface TodoSearchBarProps {
   setSearchTerm: (term: string) => void;
 }
 
 const TodoSearchBar: React.FC<TodoSearchBarProps> = ({ setSearchTerm }) => {
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const changeSearchParams = (searchName: string) => {
     setSearchTerm(searchName);
@@ -38,7 +38,7 @@ const TodoSearchBar: React.FC<TodoSearchBarProps> = ({ setSearchTerm }) => {
 
   return (
     <Tooltip
-      title="Search by name"
+      title={<Typography fontSize={"14px"}>Search by name</Typography>}
       arrow
       placement="left"
       disableInteractive
@@ -46,6 +46,7 @@ const TodoSearchBar: React.FC<TodoSearchBarProps> = ({ setSearchTerm }) => {
       TransitionProps={{ timeout: 600 }}
     >
       <TextField
+        defaultValue={searchParams.get("name") || ""}
         id="filled-search"
         label="Search"
         type="search"
