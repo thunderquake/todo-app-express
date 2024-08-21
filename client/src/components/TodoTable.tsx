@@ -22,6 +22,7 @@ import TodosTablePagination from "./TablePagination";
 import useDeleteTodoMutation from "../api/todo_service/deleteTodo";
 import TodoSearchBar from "./TodoSearch";
 import { AxiosError, HttpStatusCode } from "axios";
+import TodoFilterMenu from "./TodoFilter";
 
 const TodosTable = () => {
   const [searchParams] = useSearchParams();
@@ -74,6 +75,7 @@ const TodosTable = () => {
           >
             Todos
           </Typography>
+          <TodoFilterMenu />
           <TodoSearchBar setSearchTerm={setSearchTerm} />
           <InputFormModal refetch={refetch} />
         </Toolbar>

@@ -28,3 +28,5 @@ export const TODO_TYPE_ICONS: Record<string, SvgIconComponent> = {
 };
 
 export const ITEMS_PER_PAGE = 8;
+
+export const TODO_TYPES = ["Idea", "Quote", "Task", "Thoughts"];
