@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, ChangeEvent } from "react";
+import React, { useEffect, useMemo, ChangeEvent, useCallback } from "react";
 import TextField from "@mui/material/TextField";
 import { useSearchParams } from "react-router-dom";
 import debounce from "lodash.debounce";
@@ -13,19 +13,22 @@ const TodoSearchBar: React.FC<TodoSearchBarProps> = ({ setSearchTerm }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const changeSearchParams = (searchName: string) => {
-    console.log(searchParams.get("type"));
-    setSearchTerm(searchName);
     setSearchParams({
       page: "1",
       ...(searchName.length > 0 ? { name: searchName } : {}),
       type: searchParams.get("type") ?? "[]",
     });
+    setSearchTerm(searchName);
   };
+
+  useEffect(() => {
+    console.log(searchParams.get("type"));
+  }, [searchParams]);
 
   const debouncedChangeSearchParams = useMemo(() => {
     return debounce(changeSearchParams, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [searchParams]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const searchName = e.target.value.trimStart();
