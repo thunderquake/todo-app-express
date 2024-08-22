@@ -17,11 +17,13 @@ export const getTodos = async (
     const itemsPerPage = Number(req.query.itemsPerPage) || 10;
     const page = Number(req.query.page) || 1;
     const name = (req.query.name as string) || "";
+    const types = (req.query.types as string[]) || [];
 
     const result = await getTodosService({
       itemsPerPage,
       page,
       name,
+      types,
     });
 
     if (result.todos.length === 0) {

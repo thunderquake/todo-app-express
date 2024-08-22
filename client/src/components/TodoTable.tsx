@@ -12,7 +12,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { TABLE_HEADERS } from "../constants/constants";
+import { TABLE_HEADERS, TODO_TYPES } from "../constants/constants";
 import useGetTodosQuery from "../api/todo_service/getTodos";
 import TodoRows from "./TodoRows";
 import { useSearchParams } from "react-router-dom";
@@ -25,13 +25,41 @@ import { AxiosError, HttpStatusCode } from "axios";
 import TodoFilterMenu from "./TodoFilter";
 
 const TodosTable = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || "1");
   const [searchTerm, setSearchTerm] = useState(searchParams.get("name") || "");
+  const [types, setTypes] = useState<string[]>(
+    (() => {
+      const typeParam = searchParams.get("type");
+      return typeParam === "[]"
+        ? TODO_TYPES
+        : typeParam
+        ? (() => {
+            try {
+              return JSON.parse(typeParam);
+            } catch {
+              return TODO_TYPES;
+            }
+          })()
+        : TODO_TYPES;
+    })()
+  );
+
+  useEffect(() => {
+    const hasParams = Array.from(searchParams.keys()).length > 0;
+
+    if (!hasParams) {
+      setSearchParams({
+        page: "1",
+        type: "[]",
+      });
+    }
+  }, [searchParams, setSearchParams]);
 
   const { data, error, isLoading, refetch } = useGetTodosQuery(
     page,
-    searchTerm
+    searchTerm,
+    types
   );
   const { mutate } = useDeleteTodoMutation();
 
@@ -47,7 +75,7 @@ const TodosTable = () => {
 
   useEffect(() => {
     refetch();
-  }, [page, refetch, searchTerm]);
+  }, [page, refetch, searchTerm, types]);
 
   return (
     <Paper
@@ -75,7 +103,7 @@ const TodosTable = () => {
           >
             Todos
           </Typography>
-          <TodoFilterMenu />
+          <TodoFilterMenu setTypes={setTypes} />
           <TodoSearchBar setSearchTerm={setSearchTerm} />
           <InputFormModal refetch={refetch} />
         </Toolbar>

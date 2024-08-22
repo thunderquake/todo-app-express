@@ -14,11 +14,29 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { useSearchParams } from "react-router-dom";
 import { TODO_TYPES } from "../constants/constants";
 
-const TodoFilterMenu: React.FC = () => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [SearchParams, setSearchParams] = useSearchParams();
+interface TodoFiltersProps {
+  setTypes: (types: string[]) => void;
+}
 
-  const initialTypes = JSON.parse(SearchParams.get("type") || "[]");
+const TodoFilterMenu: React.FC<TodoFiltersProps> = ({ setTypes }) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const typeParam = searchParams.get("type");
+
+  const initialTypes =
+    typeParam === "[]"
+      ? TODO_TYPES
+      : typeParam
+      ? (() => {
+          try {
+            return JSON.parse(typeParam);
+          } catch {
+            return TODO_TYPES;
+          }
+        })()
+      : TODO_TYPES;
+
   const [selectedTypes, setSelectedTypes] = useState<string[]>(initialTypes);
 
   const open = Boolean(anchorEl);
@@ -32,9 +50,40 @@ const TodoFilterMenu: React.FC = () => {
   };
 
   const handleChange = (event: SelectChangeEvent<string[]>) => {
-    const newSelectedTypes = event.target.value as string[];
+    let newSelectedTypes = event.target.value as string[];
+
+    if (newSelectedTypes.length === 0) {
+      newSelectedTypes = TODO_TYPES;
+    }
+
     setSelectedTypes(newSelectedTypes);
-    setSearchParams({ type: JSON.stringify(newSelectedTypes) });
+    setTypes(newSelectedTypes);
+    const currentName = searchParams.get("name");
+
+    type Params = {
+      page: string;
+      type?: string;
+      name?: string;
+    };
+
+    const sortedNewSelectedTypes = [...newSelectedTypes].sort();
+    const sortedTODO_TYPES = [...TODO_TYPES].sort();
+
+    const newParams: Params = {
+      page: "1",
+    };
+
+    if (currentName) {
+      newParams.name = currentName;
+    }
+
+    newParams.type =
+      JSON.stringify(sortedNewSelectedTypes) ===
+      JSON.stringify(sortedTODO_TYPES)
+        ? "[]"
+        : JSON.stringify(newSelectedTypes);
+
+    setSearchParams(newParams);
   };
 
   return (
@@ -50,7 +99,19 @@ const TodoFilterMenu: React.FC = () => {
           sx={{ bgcolor: "primary.main", padding: "4px", borderRadius: "100%" }}
         />
       </IconButton>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+      >
         <MenuItem>
           <FormControl fullWidth>
             <Select
