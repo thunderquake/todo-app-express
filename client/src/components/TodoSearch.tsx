@@ -13,10 +13,12 @@ const TodoSearchBar: React.FC<TodoSearchBarProps> = ({ setSearchTerm }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const changeSearchParams = (searchName: string) => {
+    console.log(searchParams.get("type"));
     setSearchTerm(searchName);
     setSearchParams({
       page: "1",
       ...(searchName.length > 0 ? { name: searchName } : {}),
+      type: searchParams.get("type") ?? "[]",
     });
   };
 

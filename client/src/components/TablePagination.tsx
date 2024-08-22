@@ -14,7 +14,11 @@ const TodosTablePagination: React.FC<TablePaginationProps> = ({
 
   const pageCount = Math.ceil(todosLength / ITEMS_PER_PAGE);
   const handleChangePage = (newPage: number) => {
-    setSearchParams({ page: newPage.toString() });
+    setSearchParams((prevParams) => {
+      const params = new URLSearchParams(prevParams);
+      params.set("page", newPage.toString());
+      return params;
+    });
   };
 
   return (

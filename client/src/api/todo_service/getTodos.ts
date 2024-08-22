@@ -11,18 +11,28 @@ export interface GetTodosResponse {
 
 const getTodos = async (
   page: number,
-  searchTerm: string
+  searchTerm: string,
+  types: string[]
 ): Promise<GetTodosResponse> => {
   const { data } = await instance.get<GetTodosResponse>("/todos", {
-    params: { itemsPerPage: ITEMS_PER_PAGE, page, name: searchTerm },
+    params: {
+      itemsPerPage: ITEMS_PER_PAGE,
+      page,
+      name: searchTerm,
+      types: types,
+    },
   });
   return data;
 };
 
-const useGetTodosQuery = (page: number, searchTerm: string) => {
+const useGetTodosQuery = (
+  page: number,
+  searchTerm: string,
+  types: string[]
+) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_TODOS_QUERY, page],
-    queryFn: () => getTodos(page, searchTerm),
+    queryFn: () => getTodos(page, searchTerm, types),
   });
 };
 
