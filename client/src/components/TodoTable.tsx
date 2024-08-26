@@ -56,7 +56,7 @@ const TodosTable = () => {
     }
   }, [searchParams, setSearchParams]);
 
-  const { data, error, isLoading, refetch } = useGetTodosQuery(
+  const { data, error, isFetching, refetch } = useGetTodosQuery(
     page,
     searchTerm,
     types
@@ -71,7 +71,7 @@ const TodosTable = () => {
     [error]
   );
 
-  console.log(isLoading);
+  console.log(isFetching);
 
   useEffect(() => {
     refetch();
@@ -121,7 +121,7 @@ const TodosTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {isLoading && (
+            {isFetching ? (
               <TableRow sx={{ height: 73 * 8 }}>
                 <TableCell
                   colSpan={TABLE_HEADERS.length}
@@ -131,8 +131,7 @@ const TodosTable = () => {
                   <CircularProgress />
                 </TableCell>
               </TableRow>
-            )}
-            {isNotFound ? (
+            ) : isNotFound ? (
               <TableRow sx={{ height: 73 * 8 }}>
                 <TableCell
                   colSpan={TABLE_HEADERS.length}
