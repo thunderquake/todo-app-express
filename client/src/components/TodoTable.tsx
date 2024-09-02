@@ -20,6 +20,7 @@ import useGetTodosQuery from "../api/todo_service/getTodos";
 import { TABLE_HEADERS, TODO_TYPES } from "../constants/constants";
 import { parseTodoTypes } from "../helpers/parseTodoTypes";
 import { InputFormModal } from "./InputFormModal";
+import TodoTypeModal from "./StatsTable";
 import TodosTablePagination from "./TablePagination";
 import TodoFilterMenu from "./TodoFilter";
 import TodoRows from "./TodoRows";
@@ -96,6 +97,7 @@ const TodosTable = () => {
           >
             Todos
           </Typography>
+          <TodoTypeModal />
           <TodoFilterMenu setTypes={setTypes} />
           <TodoSearchBar setSearchTerm={setSearchTerm} />
           <InputFormModal refetch={refetch} />
