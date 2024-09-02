@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   IconButton,
   Menu,
@@ -13,6 +13,7 @@ import {
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { useSearchParams } from "react-router-dom";
 import { TODO_TYPES } from "../constants/constants";
+import { parseTodoTypes } from "../helpers/parseTodoTypes";
 
 interface TodoFiltersProps {
   setTypes: (types: string[]) => void;
@@ -24,18 +25,15 @@ const TodoFilterMenu: React.FC<TodoFiltersProps> = ({ setTypes }) => {
 
   const typeParam = searchParams.get("type");
 
-  const initialTypes =
-    typeParam === "[]"
-      ? TODO_TYPES
-      : typeParam
-      ? (() => {
-          try {
-            return JSON.parse(typeParam);
-          } catch {
-            return TODO_TYPES;
-          }
-        })()
-      : TODO_TYPES;
+  const initialTypes = useMemo(
+    () =>
+      typeParam === "[]"
+        ? TODO_TYPES
+        : typeParam
+        ? typeParam && parseTodoTypes(typeParam)
+        : TODO_TYPES,
+    [typeParam]
+  );
 
   const [selectedTypes, setSelectedTypes] = useState<string[]>(initialTypes);
 
@@ -67,7 +65,7 @@ const TodoFilterMenu: React.FC<TodoFiltersProps> = ({ setTypes }) => {
     };
 
     const sortedNewSelectedTypes = [...newSelectedTypes].sort();
-    const sortedTODO_TYPES = [...TODO_TYPES].sort();
+    const sortedTodoTypes = [...TODO_TYPES].sort();
 
     const newParams: Params = {
       page: "1",
@@ -78,8 +76,7 @@ const TodoFilterMenu: React.FC<TodoFiltersProps> = ({ setTypes }) => {
     }
 
     newParams.type =
-      JSON.stringify(sortedNewSelectedTypes) ===
-      JSON.stringify(sortedTODO_TYPES)
+      JSON.stringify(sortedNewSelectedTypes) === JSON.stringify(sortedTodoTypes)
         ? "[]"
         : JSON.stringify(newSelectedTypes);
 
@@ -119,7 +116,7 @@ const TodoFilterMenu: React.FC<TodoFiltersProps> = ({ setTypes }) => {
               value={selectedTypes}
               onChange={handleChange}
               input={<OutlinedInput label="Filter by Type" />}
-              renderValue={(selected) => (selected as string[]).join(", ")}
+              renderValue={(selected: string[]) => selected.join(", ")}
             >
               {TODO_TYPES.map((type) => (
                 <MenuItem key={type} value={type}>
