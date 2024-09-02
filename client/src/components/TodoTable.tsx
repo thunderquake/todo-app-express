@@ -12,17 +12,18 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { TABLE_HEADERS, TODO_TYPES } from "../constants/constants";
-import useGetTodosQuery from "../api/todo_service/getTodos";
-import TodoRows from "./TodoRows";
-import { useSearchParams } from "react-router-dom";
-import { InputFormModal } from "./InputFormModal";
-import { useEffect, useMemo, useState } from "react";
-import TodosTablePagination from "./TablePagination";
-import useDeleteTodoMutation from "../api/todo_service/deleteTodo";
-import TodoSearchBar from "./TodoSearch";
 import { AxiosError, HttpStatusCode } from "axios";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import useDeleteTodoMutation from "../api/todo_service/deleteTodo";
+import useGetTodosQuery from "../api/todo_service/getTodos";
+import { TABLE_HEADERS, TODO_TYPES } from "../constants/constants";
+import { parseTodoTypes } from "../helpers/parseTodoTypes";
+import { InputFormModal } from "./InputFormModal";
+import TodosTablePagination from "./TablePagination";
 import TodoFilterMenu from "./TodoFilter";
+import TodoRows from "./TodoRows";
+import TodoSearchBar from "./TodoSearch";
 
 const TodosTable = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -34,13 +35,7 @@ const TodosTable = () => {
       return typeParam === "[]"
         ? TODO_TYPES
         : typeParam
-        ? (() => {
-            try {
-              return JSON.parse(typeParam);
-            } catch {
-              return TODO_TYPES;
-            }
-          })()
+        ? parseTodoTypes(typeParam)
         : TODO_TYPES;
     })()
   );
@@ -70,8 +65,6 @@ const TodosTable = () => {
         : false,
     [error]
   );
-
-  console.log(isFetching);
 
   useEffect(() => {
     refetch();

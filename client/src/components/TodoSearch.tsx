@@ -21,10 +21,6 @@ const TodoSearchBar: React.FC<TodoSearchBarProps> = ({ setSearchTerm }) => {
     setSearchTerm(searchName);
   };
 
-  useEffect(() => {
-    console.log(searchParams.get("type"));
-  }, [searchParams]);
-
   const debouncedChangeSearchParams = useMemo(() => {
     return debounce(changeSearchParams, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
