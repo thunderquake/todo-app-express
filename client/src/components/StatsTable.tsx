@@ -1,7 +1,9 @@
-import { useState } from "react";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import {
   Box,
   Button,
+  CircularProgress,
+  Grow,
   IconButton,
   Modal,
   Table,
@@ -11,10 +13,8 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Grow,
-  CircularProgress,
 } from "@mui/material";
-import BarChartIcon from "@mui/icons-material/BarChart";
+import { useState } from "react";
 import useGetTodoStatisticsQuery from "../api/todo_service/getTodoStats";
 
 const TodoTypeModal = () => {

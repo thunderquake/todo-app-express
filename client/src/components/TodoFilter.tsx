@@ -1,16 +1,16 @@
-import { useMemo, useState } from "react";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import {
+  Checkbox,
+  FormControl,
   IconButton,
+  ListItemText,
   Menu,
   MenuItem,
-  FormControl,
-  Select,
-  Checkbox,
-  ListItemText,
   OutlinedInput,
+  Select,
   SelectChangeEvent,
 } from "@mui/material";
-import FilterListIcon from "@mui/icons-material/FilterList";
+import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { TODO_TYPES } from "../constants/constants";
 import { parseTodoTypes } from "../helpers/parseTodoTypes";
@@ -89,6 +89,7 @@ const TodoFilterMenu: React.FC<TodoFiltersProps> = ({ setTypes }) => {
         onClick={handleClick}
         sx={{
           margin: "10px",
+          marginLeft: "4px",
         }}
       >
         <FilterListIcon
