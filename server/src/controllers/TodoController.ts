@@ -5,6 +5,7 @@ import {
   deleteTodoService,
   editTodoService,
   getTodosService,
+  getTodoStatisticsService,
 } from "../services/TodoService";
 import { StatusCodes } from "http-status-codes";
 import { ERROR_MESSAGES } from "../constants/constants";
@@ -36,6 +37,21 @@ export const getTodos = async (
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ message: ERROR_MESSAGES.TODOS_NOT_FOUND });
+  }
+};
+
+export const getTodoStatistics = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const statistics = await getTodoStatisticsService();
+
+    return res.status(200).json(statistics);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error retrieving TODO statistics" });
   }
 };
 

@@ -40,6 +40,25 @@ export const getTodosService = async ({
     totalCount: Number(countResult.rows[0].count),
   };
 };
+
+export const getTodoStatisticsService = async () => {
+  const query = `
+    SELECT type, COUNT(*) AS quantity 
+    FROM todos
+    GROUP BY type
+    ORDER BY type ASC
+  `;
+
+  const result = await pool.query(query);
+
+  const statistics = result.rows.map((row) => ({
+    type: row.type,
+    quantity: Number(row.quantity),
+  }));
+
+  return statistics;
+};
+
 export const createTodoService = async ({
   name,
   description,

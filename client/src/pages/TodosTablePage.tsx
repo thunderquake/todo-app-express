@@ -16,14 +16,21 @@ const TodosTablePage = () => {
     <Box
       padding={0}
       margin={0}
-      height={`100vh`}
-      width={`100vw`}
+      position={"fixed"}
+      height={`100%`}
+      width={`100%`}
+      left={0}
+      top={0}
+      overflow={"hidden"}
       sx={{
         background: `rgb(52,131,224)`,
         backgroundImage: `linear-gradient(0deg, rgba(52,131,224,1) 0%, rgba(255,255,255,1) 100%)`,
       }}
     >
-      <Container maxWidth="xl">
+      <Container
+        maxWidth="xl"
+        sx={{ minHeight: "100%", marginY: "auto", alignItems: "center" }}
+      >
         <TodosTable />
       </Container>
     </Box>
